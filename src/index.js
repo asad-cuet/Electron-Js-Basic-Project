@@ -1,10 +1,69 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu, shell } = require('electron');
 const path = require('node:path');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+
+const menuItems=[
+  {
+    label:"Menu",
+    submenu:[
+      {
+        label:"About"
+      }
+    ]
+  },
+  {
+    label:"File",
+    submenu:[
+      {
+        label:"Learn More",
+        click: async ()=> {
+          await shell.openExternal('https://www.w3schools.com')
+        }
+      },
+      {
+        type:"separator"
+      },
+      {
+        label:"Exit",
+        click: ()=> {app.quit()}
+      },
+      {
+        role:'close'
+      }
+    ]
+  },
+  {
+    label:'Window',
+    submenu:[
+      {
+        label:"Web View Window",
+        click: async ()=> {
+          const win2=new BrowserWindow({
+            height: 300,
+            width: 400,
+            show: false,
+          });
+
+          win2.loadURL('https://www.w3schools.com');
+          win2.once("ready-to-show",()=>win2.show());
+        }
+      },
+      {
+        role:'minimize'
+      },
+      {
+        role:'close'
+      }
+    ],
+  }
+];
+
+const menu=Menu.buildFromTemplate(menuItems);
+Menu.setApplicationMenu(menu);
 
 const createWindow = () => {
   // Create the browser window.
