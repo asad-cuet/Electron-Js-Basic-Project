@@ -53,6 +53,20 @@ const menuItems=[
         }
       },
       {
+        label:"Open Camera",
+        click: async ()=> {
+          const win3=new BrowserWindow({
+            height: 300,
+            width: 400,
+            show: false,
+          });
+
+          win3.webContents.openDevTools();
+          win3.loadFile(path.join(__dirname, 'camera.html'));
+          win3.once("ready-to-show",()=>win3.show());
+        }
+      },
+      {
         role:'minimize'
       },
       {
